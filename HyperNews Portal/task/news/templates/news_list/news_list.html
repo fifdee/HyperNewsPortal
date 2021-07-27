@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News</title>
+</head>
+<body>
+    <h2>Hyper news</h2>
+    <form method="get">
+        {% csrf_token %}
+        <label>
+            <input type="text" name="q">
+        </label>
+        <button type="submit">Search</button>
+    </form>
+
+    {% regroup info|dictsortreversed:"created" by created|slice:":-9" as info_sorted %}
+    {% for news in info_sorted %}
+        <h4>{{ news.grouper }}</h4>
+
+        <ul>
+        {% for rec in news.list %}
+            <li><a target="_blank" href="/news/{{ rec.link }}/">{{ rec.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+    <a target="_blank" href="/news/create/">This is a hyperlink</a>
+</body>
+</html>
